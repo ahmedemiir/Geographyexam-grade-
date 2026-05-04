@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Examination System</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --success: #16a34a;
+            --error: #dc2626;
+            --bg: #f8fafc;
+        }
+
+        body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); margin: 0; padding: 20px; }
+        .container { max-width: 700px; margin: 40px auto; background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .hidden { display: none; }
+        h1 { color: #1e293b; text-align: center; margin-bottom: 30px; }
+        .timer-bar { position: sticky; top: 0; background: #fee2e2; color: #dc2626; padding: 10px; text-align: center; font-weight: bold; border-radius: 8px; margin-bottom: 20px; z-index: 100; }
+        .question-box { margin-bottom: 25px; padding: 20px; border: 1px solid #e2e8f0; border-radius: 10px; }
+        .question-text { font-weight: 600; font-size: 1.1rem; margin-bottom: 15px; }
+        input[type="text"] { width: 100%; padding: 12px; margin: 10px 0 20px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1rem; }
+        .option-label { display: block; padding: 10px; margin: 5px 0; background: #f1f5f9; border-radius: 6px; cursor: pointer; transition: 0.2s; }
+        .option-label:hover { background: #e2e8f0; }
+        .btn { width: 100%; padding: 15px; border: none; border-radius: 8px; color: white; font-weight: bold; font-size: 1rem; cursor: pointer; transition: 0.3s; }
+        .btn-start { background: var(--primary); }
+        .btn-submit { background: var(--success); margin-top: 20px; }
+        .btn:disabled { background: #cbd5e1; cursor: not-allowed; }
+        #result-text { font-size: 1.5rem; font-weight: bold; text-align: center; color: var(--primary); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <div id="login-screen">
+        <h1>Geography Exam Portal</h1>
+        <label>Student Name</label>
+        <input type="text" id="studentName" placeholder="Enter Full Name">
+        
+        <label>Access Code</label>
+        <input type="text" id="accessCode" placeholder="Enter Code (Hint: EXAM2026)">
+        
+        <button class="btn btn-start" onclick="startExam()">Enter Exam Room</button>
+        <p id="login-error" style="color:red; text-align:center; display:none;">Incorrect details. Please try again.</p>
+    </div>
+
+    <div id="exam-screen" class="hidden">
+        <div class="timer-bar">Time Remaining: <span id="timer">30:00</span></div>
+        <h2 id="welcome-user"></h2>
+        <p style="color: #64748b;">Please answer all questions before submitting.</p>
+        <hr>
+
+        <form id="quiz-form">
+            <!-- Questions 1-15 as defined in NEW EXAM.HTML -->
+            <div class="question-box">
+                <p class="question-text">1. Which mode of transport is described as the most widespread and flexible in Ethiopia?</p>
+                <label class="option-label"><input type="radio" name="q1" value="A"> Railway transport</label>
+                <label class="option-label"><input type="radio" name="q1" value="B"> Air transport</label>
+                <label class="option-label"><input type="radio" name="q1" value="C"> Road transport</label>
+                <label class="option-label"><input type="radio" name="q1" value="D"> Inland waterways</label>
+            </div>
+
+            <div class="question-box">
+                <p class="question-text">2. What is the major advantage of railway transport?</p>
+                <label class="option-label"><input type="radio" name="q2" value="A"> It helps in transporting bulky product </label>
+                <label class="option-label"><input type="radio" name="q2" value="B"> It can reach every rural household</label>
+                <label class="option-label"><input type="radio" name="q2" value="C">It is the fastest mode of transport</label>
+                <label class="option-label"><input type="radio" name="q2" value="D"> It does not require a fixed track</label>
+            </div>
+
+            <div class="question-box">
+                <p class="question-text">3. Which of the following is a major export of Ethiopia?</p>
+                <label class="option-label"><input type="radio" name="q3" value="A"> Chat</label>
+                <label class="option-label"><input type="radio" name="q3" value="B"> Coffee</label>
+                <label class="option-label"><input type="radio" name="q3" value="C"> Crude Oil</label>
+                <label class="option-label"><input type="radio" name="q3" value="D"> Electronics</label>
+            </div>
+
+            <div class="question-box">
+                <p class="question-text">4. Which of the following is categorized as a "Permanent (Perennial)" crop in Ethiopia?</p>
+                <label class="option-label"><input type="radio" name="q4" value="A"> Teff</label>
+                <label class="option-label"><input type="radio" name="q4" value="B"> Wheat</label>
+                <label class="option-label"><input type="radio" name="q4" value="C"> Enset</label>
+                <label class="option-label"><input type="radio" name="q4" value="D"> Barley</label>
+            </div>
+
+            <div class="question-box">
+                <p class="question-text">5. The "cut-and-burn" cultivation system practiced in the western and southwestern?</p>
+                <label class="option-label"><input type="radio" name="q5" value="A"> Plantation agriculture</label>
+                <label class="option-label"><input type="radio" name="q5" value="B"> Shifting cultivation</label>
+                <label class="option-label"><input type="radio" name="q5" value="C"> Arable farming</label>
+                <label class="option-label"><input type="radio" name="q5" value="D"> Commercial farming</label>
+            </div>
+
+            <div class="question-box">
+                <p class="question-text">6. What are the two most important statistical tools for understanding age structure?</p>
+                <label class="option-label"><input type="radio" name="q6" value="A"> Maps and Compasses</label>
+                <label class="option-label"><input type="radio" name="q6" value="B"> Age groups and Population pyramids</label>
+                <label class="option-label"><input type="radio" name="q6" value="C"> Economic activity</label>
+                <label class="option-label"><input type="radio" name="q6" value="D"> Political stability</label>
+            </div>
+
+            <div class="question-box">
+                <p class="question-text">7. A settlement where most people are engaged in secondary and tertiary activities (trade, industry) is called?</p>
+                <label class="option-label"><input type="radio" name="q7" value="A"> Urban settlement</label>
+                <label class="option-label"><input type="radio" name="q7" value="B"> Isolated settlement</label>
+                <label class="option-label"><input type="radio" name="q7" value="C"> Agricultural settlement</label>
+                <label class="option-label"><input type="radio" name="q7" value="D"> Rural settlement</label>
+            </div>
+
+            <div class="question-box">
+                <p class="question-text">8. The spatial arrangement of people over a particular area is known as?</p>
+                <label class="option-label"><input type="radio" name="q8" value="A"> Population growth</label>
+                <label class="option-label"><input type="radio" name="q8" value="B"> Population density</label>
+                <label class="option-label"><input type="radio" name="q8" value="C"> Population distribution</label>
+                <label class="option-label"><input type="radio" name="q8" value="D"> Population explosion</label>
+            </div>
+
+            <div class="question-box">
+                <p class="question-text">9. Which of these is a primary reason for studying human population?</p>
+                <label class="option-label"><input type="radio" name="q9" value="A"> To track the migration of wildlife</label>
+                <label class="option-label"><input type="radio" name="q9" value="B"> To understand the available labor force for the economy</label>
+                <label class="option-label"><input type="radio" name="q9" value="C"> To study the movement of tectonic plates</label>
+                <label class="option-label"><input type="radio" name="q9" value="D"> To measure the depth of the ocean</label>
+            </div>
+
+            <div class="question-box">
+                <p class="question-text">10. The ratio between the number of males and the number of females in a population is called?</p>
+                <label class="option-label"><input type="radio" name="q10" value="A"> The Age Ratio</label>
+                <label class="option-label"><input type="radio" name="q10" value="B"> The Dependency Ratio</label>
+                <label class="option-label"><input type="radio" name="q10" value="C"> The Sex Ratio</label>
+                <label class="option-label"><input type="radio" name="q10" value="D"> The Growth Ratio</label>
+            </div>
+
+
+            <button type="button" class="btn btn-submit" id="submit-btn" onclick="submitExam()">Submit Final Answers</button>
+        </form>
+    </div>
+
+    <div id="result-screen" class="hidden">
+        <h1>Submission Received</h1>
+        <p id="result-text" style="color: #16a34a;">Answers Sent Successfully.</p>
+        <div id="wait-container">
+            <p style="text-align: center; color: #475569;">Your result is currently hidden for security. You will be able to view your score in <b>10 Minutes</b> from now.</p>
+            <p id="unlock-timer" style="text-align: center; font-weight: bold; font-size: 1.2rem; margin: 20px 0;"></p>
+        </div>
+        <p id="email-status" style="text-align: center; color: #64748b; font-size: 0.9rem; margin-top: 20px;"></p>
+        <button class="btn btn-start" onclick="location.reload()">Return to Portal</button>
+    </div>
+
+</div>
+
+<script>
+    let timerInterval;
+    
+    function startExam() {
+        const name = document.getElementById('studentName').value;
+        const code = document.getElementById('accessCode').value;
+
+        if (name.length > 2 && code === "EXAM2026") {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('exam-screen').classList.remove('hidden');
+            document.getElementById('welcome-user').innerText = "Student: " + name;
+            startTimer(30); // 30 Minutes
+        } else {
+            document.getElementById('login-error').style.display = 'block';
+        }
+    }
+
+    function startTimer(minutes) {
+        let time = minutes * 30;
+        const display = document.getElementById('timer');
+        timerInterval = setInterval(() => {
+            let mins = Math.floor(time / 30);
+            let secs = time % 60;
+            display.innerText = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+            if (time <= 0) {
+                clearInterval(timerInterval);
+                submitExam();
+            }
+            time--;
+        }, 1000);
+    }
+
+    async function submitExam() {
+        clearInterval(timerInterval);
+        let score = 0;
+        const total = 10;
+        const form = document.getElementById('quiz-form');
+        const name = document.getElementById('studentName').value;
+        const submitBtn = document.getElementById('submit-btn');
+
+        // Scoring Logic based on NEW EXAM.HTML[cite: 1]
+        if (form.q1.value === "C") score++;
+        if (form.q2.value === "A") score++;
+        if (form.q3.value === "B") score++;
+        if (form.q4.value === "C") score++;
+        if (form.q5.value === "B") score++;
+        if (form.q6.value === "B") score++;
+        if (form.q7.value === "A") score++;
+        if (form.q8.value === "C") score++;
+        if (form.q9.value === "B") score++;
+        if (form.q10.value === "C") score++;
+
+        const percentage = Math.round((score / total) * 100);
+        const submitTime = Date.now();
+
+        // Teacher's immediate email data[cite: 1]
+        const formData = {
+            access_key: "81ce5c1d-adbe-4a95-b062-a1e52e881096",
+            subject: "Geography Exam: " + name,
+            student_name: name,
+            score: percentage + "% (" + score + "/" + total + ")"
+        };
+
+        submitBtn.disabled = true;
+        submitBtn.innerText = "Processing...";
+
+        try {
+            await fetch("https://api.web3forms.com/submit", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(formData)
+            });
+            document.getElementById('email-status').innerText = "Confirmed: Teacher notified.";
+        } catch (e) {
+            document.getElementById('email-status').innerText = "Network Error: Teacher notification failed.";
+        }
+
+        // Save result locally with timestamp for student hidden view
+        localStorage.setItem('lastExamResult', JSON.stringify({
+            name: name,
+            percent: percentage,
+            count: score,
+            time: submitTime
+        }));
+
+        document.getElementById('exam-screen').classList.add('hidden');
+        document.getElementById('result-screen').classList.remove('hidden');
+        checkUnlockStatus();
+    }
+
+    function checkUnlockStatus() {
+        const result = JSON.parse(localStorage.getItem('lastExamResult'));
+        if (!result) return;
+
+        const unlockTime = result.time + (30 * 60 * 1000); // Current time + 30 Minutes
+        
+        const updateLock = setInterval(() => {
+            const now = Date.now();
+            const diff = unlockTime - now;
+
+            if (diff <= 0) {
+                clearInterval(updateLock);
+                document.getElementById('wait-container').innerHTML = `
+                    <h2 style="color: var(--primary)">Your Score: ${result.percent}%</h2>
+                    <p>Correct: ${result.count} out of 10</p>
+                `;
+            } else {
+                let m = Math.floor(diff / 60000);
+                let s = Math.floor((diff % 60000) / 1000);
+                document.getElementById('unlock-timer').innerText = `Unlocking in ${m}m ${s}s`;
+            }
+        }, 1000);
+    }
+</script>
+
+</body>
+</html>
